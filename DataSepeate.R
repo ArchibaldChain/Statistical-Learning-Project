@@ -2,10 +2,10 @@
 set.seed(1)
 sub<-sample(1:nrow(Boston),round(nrow(Boston)*2/3))
 length(sub)
-data_train<-Boston[sub,]#取2/3的数据做训练集
-data_test<-Boston[-sub,]#取1/3的数据做测试集
-dim(data_train)#训练集行数和列数13542 23
-dim(data_test) #测试集的行数和列数6771 23
+data_train<-Boston[sub,]# get 2/3 of data as training sets
+data_test<-Boston[-sub,]# get 1/3 of data as test sets
+dim(data_train)
+dim(data_test) 
 head(data_train)
 head(data_test)
 write.table(data_train, file = "data/data_train.csv", append = FALSE, quote = TRUE, sep = ",",
