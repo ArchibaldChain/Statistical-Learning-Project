@@ -1,4 +1,4 @@
-# 
+# The function was used to seperate data into training sets and test sets
 set.seed(1)
 sub<-sample(1:nrow(Boston),round(nrow(Boston)*2/3))
 length(sub)

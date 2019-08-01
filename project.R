@@ -33,3 +33,9 @@ plot(dis, medv)
 library(leaps)
 regfit.fwd=regsubsets (medv~.,data=Boston ,nvmax=19,method="forward")
 summary(regfit.fwd)
+
+boxplot(medv~1,data=Boston, main="Car Milage Data", xlab="Number of Cylinders", ylab="Miles Per Gallon")
+
+standardizing = function(x){
+    x = xapply
+}
