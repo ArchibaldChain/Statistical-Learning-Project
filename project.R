@@ -42,14 +42,13 @@ ggplot(stack(as.data.frame(scale(Boston))), aes(x = ind, y = values)) +geom_boxp
 
 ### Data split
 data_test = read.table("data/data_test.csv", header = T, na.string = "?", sep = ",")
+data_train = read.table("data/data_train.csv", header = T, na.string = "?", sep = ",")
 
 ### Standardizing the data
 
 matrix_Boston = matrix(data = Boston[2:506,])
 
 standard_Boston = standardizing(Boston)
-head(standard_Boston)
-standard_Boston[,"chas"]
 
 ggplot(stack(as.data.frame(scale(standard_Boston))), aes(x = ind, y = values)) +geom_boxplot(fill = brewer.pal(7, "Oranges")[4], color = brewer.pal(7, "Oranges")[6])
 
