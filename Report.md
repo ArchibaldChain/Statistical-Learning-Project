@@ -6,17 +6,11 @@
 
 **Grade: Sophomore**
 
-
-
 ### 1 Introduction
 
-​	Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price data through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
+​	Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
 
 ​	We collected enough data and did some preprocessing: we randomly selected 2/3 as training data and set the remaining as test data. The training data is used to train the linear model and the test data is used to assess the model.For problems with multiple variables such as Boston house price, there are several typical ways to optimize the model. We tried these optimization methods and found out the  optimum fitting of the problem.
-
-
-
-
 
 #### 1.1 Datasets
 
@@ -39,8 +33,6 @@ Our data come from an old essay about Boston house price, *Hedonic prices and th
 | rad      | Index of accessibility to radical highways.                  | MIT Boston Project                           |
 | nox      | Nitrogen oxides concentration in pphm (annual aver-age concentration in parts per hundred million). | TASSIM                                       |
 
-
-
 We randomly divided the data into two sets: 
 
 - Training set: randomly chosen 2/3 of origin sets,
@@ -61,12 +53,12 @@ The box graph of all variables was shown to illustrate the data distribution.
 
 #### 1.3 Data Standardizing
 
-In the Lasso model, we need to use the formula below to standardizing the data:
+In the Lasso model, we need to use the formula below to standardize the data:
 $$
 \widetilde x_{i,j} = \frac{x_{i,j}}{\sqrt{{\frac{1}{n}}\sum_{i=1}^{n}(\frac{x_{i,j}}{x_{i,j}-\bar x_j})^2}}
 $$
 
-After standardization, the head of data is shown below:
+After standardizing, the head of data is shown below:
 
 | zn       | indus    | chas | nox      | rm       | age      | dis      | rad      | tax      | ptratio  | black    | lstat    | medv     |
 | -------- | -------- | ---- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
@@ -103,8 +95,9 @@ $$
 TSS = \sum_{i=1}^{n}(y_i - \bar{y}_i)^2
 $$
 
-
 ### 2 Model Selection and Implementation
+
+Our goal is finding out the major and minor factors that affect the price. Although the linear model is more restrictive,  linear model is of good explanatory, so the linear model is the best choice. Assuming that we don't choose a linear model, but choose other models with higher flexibility, we need to train the model with much bigger data than the training data used in  linear model  and the model we get is difficult to explain how any individual predictor is associated with the response.	
 
 #### 2.1 Full Model
 
