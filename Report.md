@@ -1,4 +1,4 @@
-# Statistical Learning Project: Predication and Explanation for Boston house price
+# Statistical Learning Project: Analysis of Boston house price
 
 **NAME:  钱彦兆, 王晨凯** 
 
@@ -10,13 +10,17 @@
 
 ### 1 Introduction
 
-Boston house price is one of most famous statistic problem in the last century. So we try to analyze the house price data on our own method. We used the linear regression model to to fit the data. Then, to optimize data, we used stepwise method to select variable. After that, we used Lasso method to fit data.
+​	Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price data through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
+
+​	We collected enough data and did some preprocessing: we randomly selected 2/3 as training data and set the remaining as test data. The training data is used to train the linear model and the test data is used to assess the model.For problems with multiple variables such as Boston house price, there are several typical ways to optimize the model. We tried these optimization methods and found out the  optimum fitting of the problem.
+
+
 
 
 
 #### 1.1 Datasets
 
-Our data comes from an old essay about Boston house price, *Hedonic prices and the demand for clean air* .
+Our data come from an old essay about Boston house price, *Hedonic prices and the demand for clean air* .
 
 | Variable | Definition                                                   | Source                                       |
 | -------- | ------------------------------------------------------------ | -------------------------------------------- |
@@ -43,7 +47,7 @@ We randomly divided the data into two sets:
 
 - Test set: randomly chosen 1/3 of origin sets. 
 
-And we will use test set to assess our model. Besides, the variable of "chas" is already dummied.
+And we will use test setting to assess our model. Besides, the variable of "chas" is already dummied.
 
 #### 1.2 Data Visualization
 
@@ -57,12 +61,12 @@ The box graph of all variables was shown to illustrate the data distribution.
 
 #### 1.3 Data Standardizing
 
-In the Lasso model, we need use the formula below to standardizing the data:
+In the Lasso model, we need to use the formula below to standardizing the data:
 $$
 \widetilde x_{i,j} = \frac{x_{i,j}}{\sqrt{{\frac{1}{n}}\sum_{i=1}^{n}(\frac{x_{i,j}}{x_{i,j}-\bar x_j})^2}}
 $$
 
-After standarded, the head of data is shown below:
+After standardization, the head of data is shown below:
 
 | zn       | indus    | chas | nox      | rm       | age      | dis      | rad      | tax      | ptratio  | black    | lstat    | medv     |
 | -------- | -------- | ---- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
@@ -85,7 +89,7 @@ $$
 RSE = \sqrt[]{\frac{RSS}{n-2}}
 $$
 
-​		where RSS(residual sum of squares) is:
+​		Where RSS(residual sum of squares) is:
 $$
 RSS = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2
 $$
@@ -94,7 +98,7 @@ $$
 $$
 R^2 = \frac{TSS-RSS}{TSS} = 1 - \frac{RSS}{TSS}
 $$
-​		where TSS(total sum of squares) is:
+​		Where TSS(total sum of squares) is:
 $$
 TSS = \sum_{i=1}^{n}(y_i - \bar{y}_i)^2
 $$
