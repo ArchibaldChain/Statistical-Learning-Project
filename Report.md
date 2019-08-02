@@ -23,6 +23,17 @@
 
 Our data come from an old essay about Boston house price, *Hedonic prices and the demand for clean air* .
 
+We randomly divided the data into two sets: 
+
+- Training set: randomly chosen 2/3 of origin sets,
+- Test set: randomly chosen 1/3 of origin sets. 
+
+And we will use test setting to assess our model. Besides, the variable of "chas" is already dummied.
+
+
+
+
+
 | Variable | Definition                                                   | Source                                       |
 | -------- | ------------------------------------------------------------ | -------------------------------------------- |
 | medv     | Median Value of owner-occupied                               | 1970 U. S. Census                            |
@@ -41,14 +52,6 @@ Our data come from an old essay about Boston house price, *Hedonic prices and th
 | nox      | Nitrogen oxides concentration in pphm (annual aver-age concentration in parts per hundred million). | TASSIM                                       |
 
 
-
-We randomly divided the data into two sets: 
-
-- Training set: randomly chosen 2/3 of origin sets,
-
-- Test set: randomly chosen 1/3 of origin sets. 
-
-And we will use test setting to assess our model. Besides, the variable of "chas" is already dummied.
 
 #### 1.2 Data Visualization
 
@@ -224,17 +227,11 @@ $$
 
 We compare the effect of the three regression model and illustrate them.
 
-stepwise 出现了过拟合现象。
-
- full model 表现最好。
+![test](Graph\test.png)
 
 
 
-![test](C:\Users\14286\Desktop\test.png)
-
-
-
-![](C:\Users\14286\Desktop\training.png)
+![](Graph\training.png)
 
 From the two graph above, we can draw two main conclusion: one  is that the full model fits the data best, another is stepwise regression overfits the training data.
 
