@@ -40,7 +40,9 @@ library(ggplot2)
 ggplot(stack(as.data.frame(scale(Boston))), aes(x = ind, y = values)) +geom_boxplot(fill = brewer.pal(7, "Blues")[4], color = brewer.pal(7, "Blues")[6])
 # fill = brewer.pal(6, "oranges")[4], color = brewer.pal(7, "oranges")[6]
 
-###
+### Data split
+data_test = read.table("data/data_test.csv", header = T, na.string = "?", sep = ",")
+
 ### Standardizing the data
 
 matrix_Boston = matrix(data = Boston[2:506,])
