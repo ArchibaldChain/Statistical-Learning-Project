@@ -10,9 +10,10 @@
 
 ### 1 Introduction
 
-​	Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price data through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
+​	 Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
 
 ​	We collected enough data and did some preprocessing: we randomly selected 2/3 as training data and set the remaining as test data. The training data is used to train the linear model and the test data is used to assess the model.For problems with multiple variables such as Boston house price, there are several typical ways to optimize the model. We tried these optimization methods and found out the  optimum fitting of the problem.
+
 
 
 
@@ -103,9 +104,120 @@ $$
 TSS = \sum_{i=1}^{n}(y_i - \bar{y}_i)^2
 $$
 
+3. **Adjusted-R^2^ statistic**
+
+$$
+R^2 = \frac{TSS-RSS}{TSS} = 1 - \frac{RSS/(n-d-1)}{TSS/(n-1)}
+$$
+
 ### 2 Model Selection and Implementation
 
+​	Our goal is finding out the major and minor factors that affect the price. Although the linear model is more restrictive,  linear model is of good explanatory, so the linear model is the best choice. Assuming that we don't choose a linear model, but choose other models with higher flexibility, we need to train the model with much bigger data than the training data used in  linear model  and the model we get is difficult to explain how any individual predictor is associated with the response.
+
 #### 2.1 Full Model
+
+|           | Estimate  | Std.Error | t value | Pr(>\|t\|) |
+| --------- | --------- | --------- | ------- | ---------- |
+| intercept | 0.210528  | 0.252044  | 0.835   | 0.404177   |
+| crim      | -0.048952 | 0.053972  | -0.907  | 0.365087   |
+| zn        | 0.028821  | 0.014665  | 1.965   | 0.050246   |
+| indus     | 0.026266  | 0.063904  | 0.411   | 0.681325   |
+| chas      | 0.096118  | 0.031029  | 3.098   | 0.002122   |
+| nox       | -8.215957 | 4.023916  | -2.042  | 0.041985   |
+| rm        | 7.433033  | 0.455925  | 16.303  | <0.0001    |
+| age       | -0.028337 | 0.012587  | -2.251  | 0.025042   |
+| dis       | -1.195338 | 0.210403  | -5.681  | <0.0001    |
+| rad       | 0.345224  | 0.093474  | 3.693   | 0.000260   |
+| tax       | -0.041890 | 0.012559  | -3.335  | 0.000951   |
+| ptratio   | -0.742733 | 0.125414  | -5.922  | <0.0001    |
+| black     | 0.031737  | 0.008901  | 3.565   | 0.000418   |
+| lstat     | -0.285383 | 0.059129  | -4.826  | <0.0001    |
+
+**full model**
+
+|               | RSE    | $R^2$  | Adjusted $R^2$ |
+| :-----------: | ------ | ------ | -------------- |
+| training data | 0.1508 | 0.8762 | 0.8712         |
+|   test data   | 0.1106 | 0.8324 | 0.8172         |
+
+
+#### 2.2 Stepwise Selection
+
+|           | Estimate  | Std.Error | t value | Pr(>\|t\|) |
+| --------- | --------- | --------- | ------- | ---------- |
+| intercept | -0.340526 | 0.061531  | -5.534  | <0.0001    |
+| rm        | 8.262658  | 0.279706  | 29.541  | <0.0001    |
+| age       | -0.040181 | 0.012491  | -3.217  | 0.00142    |
+| dis       | -0.920175 | 0.171070  | -5.379  | <0.0001    |
+| ptratio   | -0.709611 | 0.105491  | -6.727  | <0.0001    |
+| black     | 0.035939  | 0.006729  | 5.341   | <0.0001    |
+| lstat     | -0.278504 | 0.055662  | -5.004  | <0.0001    |
+
+
+
+|               | RSE    | $R^2$  | Adjusted $R^2$ |
+| ------------- | ------ | ------ | -------------- |
+| training data | 0.1573 | 0.8624 | 0.8599         |
+| test data     | 0.1521 | 0.6830 | 0.6692         |
+
+
+
+#### 2.3 Lasso Model
+
+
+$$
+\sum_{i=1}^{n}(y_i - \beta_0 - \sum_{j=1}^{p}\beta_jx_{ij})^2 + \lambda\sum_{j=1}^{p}\vert\beta_j\vert = RSS + \lambda\sum_{j = 1}^{p}\vert\beta_j\vert
+$$
+
+
+test
+
+$R^{2} = 0.7823308  $            $RSE = $ 0.1260907         $Adjusted-R^2 = 0.7625427$
+
+train
+
+$R^{2} = 0.7941389  $            $RSE = $ 0.1914669         $Adjusted-R^2 = $0.7851884
+
+
+
+Some of those coefficients go to zero denpending on the choice of tuning parameter.
+
+![](Graph/lasso_model.png)
+
+We can also see the Mean-Value Error become bigger as $\lambda$ becomes larger.
+
+![](Graph/lasso_model_mse.png)
+
+And the $\lambda%$ was chosen as:
+$$
+\lambda = 0.0003384039
+$$
+
+
+|               | RSE    | $R^2$  | Adjusted $R^2$ |
+| ------------- | ------ | ------ | -------------- |
+| training data | 0.1915 | 0.7941 | 0.7852         |
+| test data     | 0.1261 | 0.7823 | 0.7625         |
+
+
+
+### 3 Assess the Model
+
+
+
+
+
+
+
+### References
+
+[1] Harrison, D. and Rubinfeld, D.L. (1978) Hedonic prices and the demand for clean air. J. Environ. Economics and Management 5, 81–102.
+
+
+
+### Appendix
+
+#### 1. Full model Summary
 
 ```
 Call:
@@ -113,36 +225,33 @@ lm(formula = medv ~ ., data = train_stand)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.29748 -0.06384 -0.01443  0.03943  0.52414 
+-0.30594 -0.09052 -0.02251  0.05955  0.66238 
 
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept)   0.685267   0.289184   2.370 0.019036 *  
-crim         -0.130805   0.070029  -1.868 0.063667 .  
-zn            0.049557   0.023113   2.144 0.033587 *  
-indus        -0.039806   0.098869  -0.403 0.687788    
-chas          0.007656   0.045912   0.167 0.867787    
-nox         -10.733974   5.887119  -1.823 0.070185 .  
-rm            5.261537   0.761009   6.914 1.16e-10 ***
-age           0.007635   0.020272   0.377 0.706959    
-dis          -1.152005   0.306350  -3.760 0.000240 ***
-rad           0.142643   0.156371   0.912 0.363073    
-tax          -0.052273   0.019673  -2.657 0.008706 ** 
-ptratio      -0.734369   0.198354  -3.702 0.000296 ***
-black         0.007676   0.014201   0.541 0.589619    
-lstat        -0.422975   0.094634  -4.470 1.51e-05 ***
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.210528   0.252044   0.835 0.404177    
+crim        -0.048952   0.053972  -0.907 0.365087    
+zn           0.028821   0.014665   1.965 0.050246 .  
+indus        0.026266   0.063904   0.411 0.681325    
+chas         0.096118   0.031029   3.098 0.002122 ** 
+nox         -8.215957   4.023916  -2.042 0.041985 *  
+rm           7.433033   0.455925  16.303  < 2e-16 ***
+age         -0.028337   0.012587  -2.251 0.025042 *  
+dis         -1.195338   0.210403  -5.681 2.99e-08 ***
+rad          0.345224   0.093474   3.693 0.000260 ***
+tax         -0.041890   0.012559  -3.335 0.000951 ***
+ptratio     -0.742733   0.125414  -5.922 8.12e-09 ***
+black        0.031737   0.008901   3.565 0.000418 ***
+lstat       -0.285383   0.059129  -4.826 2.15e-06 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.1148 on 155 degrees of freedom
-Multiple R-squared:  0.8319,	Adjusted R-squared:  0.8178 
-F-statistic:    59 on 13 and 155 DF,  p-value: < 2.2e-16
+Residual standard error: 0.1508 on 323 degrees of freedom
+Multiple R-squared:  0.8762,	Adjusted R-squared:  0.8712 
+F-statistic: 175.8 on 13 and 323 DF,  p-value: < 2.2e-16
 ```
 
-$R^{2} = 0.8324587  $            $RSE = 0.1106231$
-
-
-#### 2.2 Stepwise Selection
+#### 2. Stepwis Model Summary
 
 ```
 Subset selection object
@@ -167,63 +276,65 @@ lstat       FALSE      FALSE
 Selection Algorithm: backward
           crim zn  indus chas nox rm  age dis rad tax ptratio black lstat
 1  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " " "     " "   " "  
-2  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " " "     " "   "*"  
+2  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " "*"     " "   " "  
 3  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " "*"     " "   "*"  
-4  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " "*" "*"     " "   "*"  
-5  ( 1 )  " "  " " " "   " "  " " "*" " " "*" " " "*" "*"     " "   "*"  
-6  ( 1 )  " "  " " " "   " "  "*" "*" " " "*" " " "*" "*"     " "   "*"  
-7  ( 1 )  " "  "*" " "   " "  "*" "*" " " "*" " " "*" "*"     " "   "*"  
-8  ( 1 )  "*"  "*" " "   " "  "*" "*" " " "*" " " "*" "*"     " "   "*"  
-9  ( 1 )  "*"  "*" " "   " "  "*" "*" " " "*" "*" "*" "*"     " "   "*"  
-10  ( 1 ) "*"  "*" " "   " "  "*" "*" " " "*" "*" "*" "*"     "*"   "*"  
-11  ( 1 ) "*"  "*" "*"   " "  "*" "*" " " "*" "*" "*" "*"     "*"   "*"  
-12  ( 1 ) "*"  "*" "*"   " "  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
-13  ( 1 ) "*"  "*" "*"   "*"  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
+4  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " "*"     "*"   "*"  
+5  ( 1 )  " "  " " " "   " "  " " "*" " " "*" " " " " "*"     "*"   "*"  
+6  ( 1 )  " "  " " " "   " "  " " "*" "*" "*" " " " " "*"     "*"   "*"  
+7  ( 1 )  " "  " " " "   "*"  " " "*" "*" "*" " " " " "*"     "*"   "*"  
+8  ( 1 )  " "  " " " "   "*"  " " "*" "*" "*" "*" " " "*"     "*"   "*"  
+9  ( 1 )  " "  " " " "   "*"  " " "*" "*" "*" "*" "*" "*"     "*"   "*"  
+10  ( 1 ) " "  " " " "   "*"  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
+11  ( 1 ) " "  "*" " "   "*"  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
+12  ( 1 ) "*"  "*" " "   "*"  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
+13  ( 1 ) "*"  "*" "*"   "*"  "*" "*" "*" "*" "*" "*" "*"     "*"   "*" 
 ```
 
 ```
+### Linear fit after selection
 Call:
-lm(formula = medv ~ nox + rm + dis + tax + ptratio + lstat, data = train_stand)
+lm(formula = medv ~ rm + age + dis + ptratio + black + lstat, 
+    data = train_stand)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.28819 -0.06646 -0.01705  0.04202  0.54804 
+-0.34241 -0.08930 -0.02355  0.05557  0.77534 
 
 Coefficients:
              Estimate Std. Error t value Pr(>|t|)    
-(Intercept)   0.80089    0.21454   3.733 0.000262 ***
-nox         -12.11196    5.03376  -2.406 0.017248 *  
-rm            5.46786    0.67590   8.090 1.33e-13 ***
-dis          -0.76712    0.22852  -3.357 0.000982 ***
-tax          -0.05234    0.01332  -3.929 0.000126 ***
-ptratio      -0.93286    0.17132  -5.445 1.89e-07 ***
-lstat        -0.44895    0.08292  -5.414 2.19e-07 ***
+(Intercept) -0.340526   0.061531  -5.534 6.38e-08 ***
+rm           8.262658   0.279706  29.541  < 2e-16 ***
+age         -0.040181   0.012491  -3.217  0.00142 ** 
+dis         -0.920175   0.171070  -5.379 1.42e-07 ***
+ptratio     -0.709611   0.105491  -6.727 7.67e-11 ***
+black        0.035939   0.006729   5.341 1.73e-07 ***
+lstat       -0.278504   0.055662  -5.004 9.17e-07 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.1152 on 162 degrees of freedom
-Multiple R-squared:  0.8231,	Adjusted R-squared:  0.8166 
-F-statistic: 125.7 on 6 and 162 DF,  p-value: < 2.2e-16
+Residual standard error: 0.1573 on 330 degrees of freedom
+Multiple R-squared:  0.8624,	Adjusted R-squared:  0.8599 
+F-statistic: 344.7 on 6 and 330 DF,  p-value: < 2.2e-16
 ```
 
-$R^{2} = 0.8237176  $            $RSE = $0.1134721
+#### 3. Coefficients of Lasso Model
 
-#### 2.4 Lasso Model
+```
 
-##### 2.4.1 Select Lambda
+                       1
+(Intercept) -0.304039998
+crim         .          
+zn           0.003968544
+indus        .          
+chas         0.085196766
+nox          .          
+rm           7.177225496
+age         -0.006933422
+dis         -0.339243362
+rad          .          
+tax          .          
+ptratio     -0.523044728
+black        0.024274317
+lstat       -0.353402328
+```
 
-#### 2.5 Lasso + Stepwise
-
-
-
-### 3 Assess the Model
-
-
-
-
-
-
-
-### References
-
-[1] Harrison, D. and Rubinfeld, D.L. (1978) Hedonic prices and the demand for clean air. J. Environ. Economics and Management 5, 81–102.

@@ -11,6 +11,14 @@ R_square = function(y, x, beta){
     print(r)
     return(r)
 }
+
+Adjusted_R_square = function(y, x ,beta){
+    TSS = TSS(y)
+    RSS = RSS(y, x, beta)
+    r = 1- RSS*(length(y)-1) / ((length(y)-1-length(beta))*TSS)
+    print(r)
+    return(r)
+}
     
 RSS = function(y, x, beta){
     y_hat = c()
