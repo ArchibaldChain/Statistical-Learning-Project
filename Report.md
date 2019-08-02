@@ -6,11 +6,17 @@
 
 **Grade: Sophomore**
 
+
+
 ### 1 Introduction
 
-​	Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
+​	Boston house price is one of the most famous statistic problems in the last century. So we try to analyze the house price data through classical statistical methods and find out the major and minor factors that affects the price. According to our goal, linear regression is the best choice. 
 
 ​	We collected enough data and did some preprocessing: we randomly selected 2/3 as training data and set the remaining as test data. The training data is used to train the linear model and the test data is used to assess the model.For problems with multiple variables such as Boston house price, there are several typical ways to optimize the model. We tried these optimization methods and found out the  optimum fitting of the problem.
+
+
+
+
 
 #### 1.1 Datasets
 
@@ -33,6 +39,8 @@ Our data come from an old essay about Boston house price, *Hedonic prices and th
 | rad      | Index of accessibility to radical highways.                  | MIT Boston Project                           |
 | nox      | Nitrogen oxides concentration in pphm (annual aver-age concentration in parts per hundred million). | TASSIM                                       |
 
+
+
 We randomly divided the data into two sets: 
 
 - Training set: randomly chosen 2/3 of origin sets,
@@ -53,12 +61,12 @@ The box graph of all variables was shown to illustrate the data distribution.
 
 #### 1.3 Data Standardizing
 
-In the Lasso model, we need to use the formula below to standardize the data:
+In the Lasso model, we need to use the formula below to standardizing the data:
 $$
 \widetilde x_{i,j} = \frac{x_{i,j}}{\sqrt{{\frac{1}{n}}\sum_{i=1}^{n}(\frac{x_{i,j}}{x_{i,j}-\bar x_j})^2}}
 $$
 
-After standardizing, the head of data is shown below:
+After standardization, the head of data is shown below:
 
 | zn       | indus    | chas | nox      | rm       | age      | dis      | rad      | tax      | ptratio  | black    | lstat    | medv     |
 | -------- | -------- | ---- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
@@ -97,13 +105,108 @@ $$
 
 ### 2 Model Selection and Implementation
 
-Our goal is finding out the major and minor factors that affect the price. Although the linear model is more restrictive,  linear model is of good explanatory, so the linear model is the best choice. Assuming that we don't choose a linear model, but choose other models with higher flexibility, we need to train the model with much bigger data than the training data used in  linear model  and the model we get is difficult to explain how any individual predictor is associated with the response.	
-
 #### 2.1 Full Model
 
-#### 2.2 Forward Selection
+```
+Call:
+lm(formula = medv ~ ., data = train_stand)
 
-#### 2.3 Backward Selection
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.29748 -0.06384 -0.01443  0.03943  0.52414 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   0.685267   0.289184   2.370 0.019036 *  
+crim         -0.130805   0.070029  -1.868 0.063667 .  
+zn            0.049557   0.023113   2.144 0.033587 *  
+indus        -0.039806   0.098869  -0.403 0.687788    
+chas          0.007656   0.045912   0.167 0.867787    
+nox         -10.733974   5.887119  -1.823 0.070185 .  
+rm            5.261537   0.761009   6.914 1.16e-10 ***
+age           0.007635   0.020272   0.377 0.706959    
+dis          -1.152005   0.306350  -3.760 0.000240 ***
+rad           0.142643   0.156371   0.912 0.363073    
+tax          -0.052273   0.019673  -2.657 0.008706 ** 
+ptratio      -0.734369   0.198354  -3.702 0.000296 ***
+black         0.007676   0.014201   0.541 0.589619    
+lstat        -0.422975   0.094634  -4.470 1.51e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1148 on 155 degrees of freedom
+Multiple R-squared:  0.8319,	Adjusted R-squared:  0.8178 
+F-statistic:    59 on 13 and 155 DF,  p-value: < 2.2e-16
+```
+
+$R^{2} = 0.8324587  $            $RSE = 0.1106231$
+
+
+#### 2.2 Stepwise Selection
+
+```
+Subset selection object
+Call: regsubsets.formula(medv ~ ., data = train_stand, nvmax = 19, 
+    method = "backward")
+13 Variables  (and intercept)
+        Forced in Forced out
+crim        FALSE      FALSE
+zn          FALSE      FALSE
+indus       FALSE      FALSE
+chas        FALSE      FALSE
+nox         FALSE      FALSE
+rm          FALSE      FALSE
+age         FALSE      FALSE
+dis         FALSE      FALSE
+rad         FALSE      FALSE
+tax         FALSE      FALSE
+ptratio     FALSE      FALSE
+black       FALSE      FALSE
+lstat       FALSE      FALSE
+1 subsets of each size up to 13
+Selection Algorithm: backward
+          crim zn  indus chas nox rm  age dis rad tax ptratio black lstat
+1  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " " "     " "   " "  
+2  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " " "     " "   "*"  
+3  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " " " "*"     " "   "*"  
+4  ( 1 )  " "  " " " "   " "  " " "*" " " " " " " "*" "*"     " "   "*"  
+5  ( 1 )  " "  " " " "   " "  " " "*" " " "*" " " "*" "*"     " "   "*"  
+6  ( 1 )  " "  " " " "   " "  "*" "*" " " "*" " " "*" "*"     " "   "*"  
+7  ( 1 )  " "  "*" " "   " "  "*" "*" " " "*" " " "*" "*"     " "   "*"  
+8  ( 1 )  "*"  "*" " "   " "  "*" "*" " " "*" " " "*" "*"     " "   "*"  
+9  ( 1 )  "*"  "*" " "   " "  "*" "*" " " "*" "*" "*" "*"     " "   "*"  
+10  ( 1 ) "*"  "*" " "   " "  "*" "*" " " "*" "*" "*" "*"     "*"   "*"  
+11  ( 1 ) "*"  "*" "*"   " "  "*" "*" " " "*" "*" "*" "*"     "*"   "*"  
+12  ( 1 ) "*"  "*" "*"   " "  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
+13  ( 1 ) "*"  "*" "*"   "*"  "*" "*" "*" "*" "*" "*" "*"     "*"   "*"  
+```
+
+```
+Call:
+lm(formula = medv ~ nox + rm + dis + tax + ptratio + lstat, data = train_stand)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.28819 -0.06646 -0.01705  0.04202  0.54804 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   0.80089    0.21454   3.733 0.000262 ***
+nox         -12.11196    5.03376  -2.406 0.017248 *  
+rm            5.46786    0.67590   8.090 1.33e-13 ***
+dis          -0.76712    0.22852  -3.357 0.000982 ***
+tax          -0.05234    0.01332  -3.929 0.000126 ***
+ptratio      -0.93286    0.17132  -5.445 1.89e-07 ***
+lstat        -0.44895    0.08292  -5.414 2.19e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1152 on 162 degrees of freedom
+Multiple R-squared:  0.8231,	Adjusted R-squared:  0.8166 
+F-statistic: 125.7 on 6 and 162 DF,  p-value: < 2.2e-16
+```
+
+$R^{2} = 0.8237176  $            $RSE = $0.1134721
 
 #### 2.4 Lasso Model
 
