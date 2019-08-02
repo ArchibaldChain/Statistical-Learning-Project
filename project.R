@@ -43,11 +43,12 @@ ggplot(stack(as.data.frame(scale(Boston))), aes(x = ind, y = values)) +geom_boxp
 ###
 ### Standardizing the data
 
-matrix_Boston = matrix(data = Boston[2,506])
-dim(matrix_Boston)
-standard_Boston = standardizing(Boston[,-chas])
+matrix_Boston = matrix(data = Boston[2:506,])
+
+standard_Boston = standardizing(Boston)
 head(standard_Boston)
-fix(standard_Boston)
+standard_Boston[,"chas"]
+
 ggplot(stack(as.data.frame(scale(standard_Boston))), aes(x = ind, y = values)) +geom_boxplot(fill = brewer.pal(7, "Oranges")[4], color = brewer.pal(7, "Oranges")[6])
 
 
